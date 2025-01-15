@@ -1,11 +1,9 @@
-import { Button } from "@mui/material";
+"use client";
+import LoginPage from "./components/LoginPage";
 export default function Home() {
   return (
-    <div>
-      <h1>Login</h1>
-      <Button variant="contained" href="/Login">
-        Login
-      </Button>
-    </div>
+    <>
+      <LoginPage />
+    </>
   );
 }

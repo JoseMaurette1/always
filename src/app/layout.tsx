@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Roboto_Mono, DM_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
 const roboto = Roboto_Mono({
   variable: "--font-roboto-mono",
-  subsets: ["latin"],
-});
-
-const dm = DM_Mono({
-  weight: "400",
   subsets: ["latin"],
 });
 
@@ -24,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${dm.className} `}>{children}</body>
+      <body className={`${roboto.className} `}>{children}</body>
     </html>
   );
 }

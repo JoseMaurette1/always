@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { useState } from "react";
 import { upperWorkoutTemplate } from "./Upper";
 import { lowerWorkoutTemplate } from "./Lower";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,8 +12,8 @@ export default function WorkoutForm() {
   );
   const [upperWorkout, setUpperWorkout] = useState(upperWorkoutTemplate);
   const [lowerWorkout, setLowerWorkout] = useState(lowerWorkoutTemplate);
-  const [isDone, setIsDone] = useState(false);
-  const [color, setColor] = useState("gray");
+  // const [isDone, setIsDone] = useState(false);
+  // const [color, setColor] = useState("gray");
 
   const handleUpdateSet = (
     workout: typeof upperWorkout | typeof lowerWorkout,
@@ -28,7 +27,6 @@ export default function WorkoutForm() {
     updatedWorkout[exerciseIndex].sets[setIndex][key] = value;
     setWorkout(updatedWorkout);
   };
-
   const renderWorkout = (
     workout: typeof upperWorkout,
     setWorkout: typeof setUpperWorkout

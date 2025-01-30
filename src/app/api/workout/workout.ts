@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma"; // Assuming your Prisma client is located her
 interface Set {
   weight: number;
   reps: number;
+  exercise: string;
 }
 
 interface WorkoutRequest {
@@ -36,10 +37,11 @@ export default async function handler(
         },
         include: {
           sets: {
-            select: {
-              weight: true,
-              reps: true,
-            },
+            create: sets.map((set) => ({
+              weight: set.weight,
+              reps: set.reps,
+              exercise: set.exercise,
+            })),
           },
         },
       });

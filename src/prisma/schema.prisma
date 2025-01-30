@@ -24,8 +24,7 @@ model Set {
   id        Int    @id @default(autoincrement())
   weight    Float
   reps      Int
+  exercise  String // Add this field
   workout   Workout @relation("WorkoutSets", fields: [workoutId], references: [id])
   workoutId Int
 }
-
-

@@ -1,5 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { toast } from "sonner";
+import {
+  Download,
+  History,
+  BicepsFlexed,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react";
 import { upperWorkoutTemplate } from "./Upper";
 import { lowerWorkoutTemplate } from "./Lower";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,28 +19,68 @@ export default function WorkoutForm() {
   const [workoutType, setWorkoutType] = useState<"upper" | "lower" | null>(
     null
   );
-  const [upperWorkout, setUpperWorkout] = useState(upperWorkoutTemplate);
-  const [lowerWorkout, setLowerWorkout] = useState(lowerWorkoutTemplate);
-  // const [isDone, setIsDone] = useState(false);
-  // const [color, setColor] = useState("gray");
+
+  const loadWorkout = (type: "upper" | "lower") => {
+    const storedWorkout = localStorage.getItem(`${type}Workout`);
+    return storedWorkout
+      ? JSON.parse(storedWorkout)
+      : type === "upper"
+      ? upperWorkoutTemplate
+      : lowerWorkoutTemplate;
+  };
+
+  const [upperWorkout, setUpperWorkout] = useState(loadWorkout("upper"));
+  const [lowerWorkout, setLowerWorkout] = useState(loadWorkout("lower"));
+
+  const saveWorkout = (type: "upper" | "lower", data: any) => {
+    const savedWorkouts = JSON.parse(
+      localStorage.getItem(`${type}WorkoutHistory`) || "[]"
+    );
+
+    const workoutWithDate = {
+      date: new Date().toISOString(), // Store the current date in ISO format
+      exercises: data,
+    };
+
+    savedWorkouts.push(workoutWithDate);
+    localStorage.setItem(
+      `${type}WorkoutHistory`,
+      JSON.stringify(savedWorkouts)
+    );
+  };
 
   const handleUpdateSet = (
     workout: typeof upperWorkout | typeof lowerWorkout,
-    setWorkout: typeof setUpperWorkout | typeof setLowerWorkout,
+    setWorkout: React.Dispatch<React.SetStateAction<typeof workout>>,
+    type: "upper" | "lower",
     exerciseIndex: number,
     setIndex: number,
     key: "weight" | "reps",
     value: number
   ) => {
-    const updatedWorkout = [...workout];
-    updatedWorkout[exerciseIndex].sets[setIndex][key] = value;
-    setWorkout(updatedWorkout);
+    setWorkout((prevWorkout: any) => {
+      const updatedWorkout = prevWorkout.map((exercise: any, i: any) =>
+        i === exerciseIndex
+          ? {
+              ...exercise,
+              sets: exercise.sets.map((set: any, j: any) =>
+                j === setIndex ? { ...set, [key]: value } : set
+              ),
+            }
+          : exercise
+      );
+
+      saveWorkout(type, updatedWorkout);
+      return updatedWorkout;
+    });
   };
+
   const renderWorkout = (
     workout: typeof upperWorkout,
-    setWorkout: typeof setUpperWorkout
+    setWorkout: typeof setUpperWorkout,
+    type: "upper" | "lower"
   ) =>
-    workout.map((exercise, exerciseIndex) => (
+    workout.map((exercise: any, exerciseIndex: any) => (
       <Card key={exercise.name} className="mb-4">
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
@@ -39,7 +88,7 @@ export default function WorkoutForm() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {exercise.sets.map((set, setIndex) => (
+          {exercise.sets.map((set: any, setIndex: any) => (
             <div key={setIndex} className="flex items-center space-x-2 mb-2">
               <div className="flex flex-col">
                 <label
@@ -51,17 +100,21 @@ export default function WorkoutForm() {
                 <Input
                   id={`weight-${exerciseIndex}-${setIndex}`}
                   type="number"
-                  value={set.weight}
-                  onChange={(e) =>
+                  value={set.weight ?? ""}
+                  onChange={(e) => {
+                    const newValue = e.target.value
+                      ? parseFloat(e.target.value)
+                      : 0; // Ensure a valid number
                     handleUpdateSet(
                       workout,
                       setWorkout,
+                      "upper", // or "lower" dynamically
                       exerciseIndex,
                       setIndex,
                       "weight",
-                      parseFloat(e.target.value)
-                    )
-                  }
+                      newValue
+                    );
+                  }}
                   className="w-20"
                   placeholder="Weight"
                 />
@@ -77,77 +130,32 @@ export default function WorkoutForm() {
                 <Input
                   id={`reps-${exerciseIndex}-${setIndex}`}
                   type="number"
-                  value={set.reps}
-                  onChange={(e) =>
+                  value={set.reps ?? ""}
+                  onChange={(e) => {
+                    const newValue = e.target.value
+                      ? parseInt(e.target.value, 10)
+                      : 0; // Ensure a valid number
                     handleUpdateSet(
                       workout,
                       setWorkout,
+                      "upper", // or "lower" dynamically
                       exerciseIndex,
                       setIndex,
                       "reps",
-                      parseFloat(e.target.value)
-                    )
-                  }
+                      newValue
+                    );
+                  }}
                   className="w-20"
                   placeholder="Reps"
                 />
               </div>
 
               <span className="text-sm text-gray-500">Set {setIndex + 1}</span>
-              <div></div>
             </div>
           ))}
         </CardContent>
       </Card>
     ));
-
-  const handleSaveWorkout = async () => {
-    if (!workoutType) return;
-
-    // Transform the nested exercise/sets structure to include exercise names
-    const workoutData = {
-      userId: 1, // Replace with actual user ID
-      workoutType,
-      date: new Date().toISOString(),
-      sets:
-        workoutType === "upper"
-          ? upperWorkout.flatMap((exercise) =>
-              exercise.sets.map((set) => ({
-                ...set,
-                exercise: exercise.name,
-              }))
-            )
-          : lowerWorkout.flatMap((exercise) =>
-              exercise.sets.map((set) => ({
-                ...set,
-                exercise: exercise.name,
-              }))
-            ),
-    };
-
-    try {
-      const response = await fetch("/api/workout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(workoutData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save workout");
-      }
-
-      const result = await response.json();
-      console.log("Workout saved successfully!", result);
-      // You could add success notification here
-      // Or reset the form
-      // Or redirect to a workout summary page
-    } catch (error) {
-      console.error("Error saving workout:", error);
-      // You could add error notification here
-    }
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -175,11 +183,32 @@ export default function WorkoutForm() {
           </CardHeader>
           <CardContent>
             {workoutType === "upper" &&
-              renderWorkout(upperWorkout, setUpperWorkout)}
+              renderWorkout(upperWorkout, setUpperWorkout, "upper")}
             {workoutType === "lower" &&
-              renderWorkout(lowerWorkout, setLowerWorkout)}
-            <div className="flex justify-center mt-6">
-              <Button onClick={handleSaveWorkout}>Save Workout</Button>
+              renderWorkout(lowerWorkout, setLowerWorkout, "lower")}
+            <div className="flex space-x-4 justify-center mt-6">
+              <Button
+                className="w-24"
+                onClick={() => {
+                  toast.success("Workout Has Been Saved", {
+                    action: {
+                      label: "Undo",
+                      onClick: () => {
+                        toast("Workout Has Been Deleted", {
+                          duration: 2000,
+                        });
+                      },
+                    },
+                  });
+                }}
+              >
+                Save <Download />
+              </Button>
+              <Link href={"/History"}>
+                <Button>
+                  Workout History <History />
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

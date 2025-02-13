@@ -1,44 +1,54 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import {
-  Download,
-  History,
-  BicepsFlexed,
-  ChevronUp,
-  ChevronDown,
-} from "lucide-react";
+import { Download, History } from "lucide-react";
 import { upperWorkoutTemplate } from "./Upper";
 import { lowerWorkoutTemplate } from "./Lower";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function WorkoutForm() {
-  const [workoutType, setWorkoutType] = useState<"upper" | "lower" | null>(
-    null
-  );
+type WorkoutType = "upper" | "lower";
 
-  const loadWorkout = (type: "upper" | "lower") => {
+type Set = {
+  weight: number;
+  reps: number;
+};
+
+type Exercise = {
+  name: string;
+  sets: Set[];
+};
+
+type Workout = Exercise[];
+
+export default function WorkoutForm() {
+  const [workoutType, setWorkoutType] = useState<WorkoutType | null>(null);
+
+  const loadWorkout = (type: WorkoutType): Workout => {
     const storedWorkout = localStorage.getItem(`${type}Workout`);
     return storedWorkout
-      ? JSON.parse(storedWorkout)
+      ? (JSON.parse(storedWorkout) as Workout)
       : type === "upper"
       ? upperWorkoutTemplate
       : lowerWorkoutTemplate;
   };
 
-  const [upperWorkout, setUpperWorkout] = useState(loadWorkout("upper"));
-  const [lowerWorkout, setLowerWorkout] = useState(loadWorkout("lower"));
+  const [upperWorkout, setUpperWorkout] = useState<Workout>(
+    loadWorkout("upper")
+  );
+  const [lowerWorkout, setLowerWorkout] = useState<Workout>(
+    loadWorkout("lower")
+  );
 
-  const saveWorkout = (type: "upper" | "lower", data: any) => {
-    const savedWorkouts = JSON.parse(
+  const saveWorkout = (type: WorkoutType, data: Workout) => {
+    const savedWorkouts: { date: string; exercises: Workout }[] = JSON.parse(
       localStorage.getItem(`${type}WorkoutHistory`) || "[]"
     );
 
     const workoutWithDate = {
-      date: new Date().toISOString(), // Store the current date in ISO format
+      date: new Date().toISOString(),
       exercises: data,
     };
 
@@ -50,20 +60,20 @@ export default function WorkoutForm() {
   };
 
   const handleUpdateSet = (
-    workout: typeof upperWorkout | typeof lowerWorkout,
-    setWorkout: React.Dispatch<React.SetStateAction<typeof workout>>,
-    type: "upper" | "lower",
+    workout: Workout,
+    setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
+    type: WorkoutType,
     exerciseIndex: number,
     setIndex: number,
-    key: "weight" | "reps",
+    key: keyof Set,
     value: number
   ) => {
-    setWorkout((prevWorkout: any) => {
-      const updatedWorkout = prevWorkout.map((exercise: any, i: any) =>
+    setWorkout((prevWorkout) => {
+      const updatedWorkout = prevWorkout.map((exercise, i) =>
         i === exerciseIndex
           ? {
               ...exercise,
-              sets: exercise.sets.map((set: any, j: any) =>
+              sets: exercise.sets.map((set, j) =>
                 j === setIndex ? { ...set, [key]: value } : set
               ),
             }
@@ -76,11 +86,11 @@ export default function WorkoutForm() {
   };
 
   const renderWorkout = (
-    workout: typeof upperWorkout,
-    setWorkout: typeof setUpperWorkout,
-    type: "upper" | "lower"
+    workout: Workout,
+    setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
+    type: WorkoutType
   ) =>
-    workout.map((exercise: any, exerciseIndex: any) => (
+    workout.map((exercise, exerciseIndex) => (
       <Card key={exercise.name} className="mb-4">
         <CardHeader>
           <CardTitle className="text-lg font-semibold">
@@ -88,7 +98,7 @@ export default function WorkoutForm() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {exercise.sets.map((set: any, setIndex: any) => (
+          {exercise.sets.map((set, setIndex) => (
             <div key={setIndex} className="flex items-center space-x-2 mb-2">
               <div className="flex flex-col">
                 <label
@@ -104,11 +114,11 @@ export default function WorkoutForm() {
                   onChange={(e) => {
                     const newValue = e.target.value
                       ? parseFloat(e.target.value)
-                      : 0; // Ensure a valid number
+                      : 0;
                     handleUpdateSet(
                       workout,
                       setWorkout,
-                      "upper", // or "lower" dynamically
+                      type,
                       exerciseIndex,
                       setIndex,
                       "weight",
@@ -134,11 +144,11 @@ export default function WorkoutForm() {
                   onChange={(e) => {
                     const newValue = e.target.value
                       ? parseInt(e.target.value, 10)
-                      : 0; // Ensure a valid number
+                      : 0;
                     handleUpdateSet(
                       workout,
                       setWorkout,
-                      "upper", // or "lower" dynamically
+                      type,
                       exerciseIndex,
                       setIndex,
                       "reps",
@@ -194,9 +204,7 @@ export default function WorkoutForm() {
                     action: {
                       label: "Undo",
                       onClick: () => {
-                        toast("Workout Has Been Deleted", {
-                          duration: 2000,
-                        });
+                        toast("Workout Has Been Deleted", { duration: 2000 });
                       },
                     },
                   });

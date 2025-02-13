@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Download, History } from "lucide-react";
@@ -25,22 +25,22 @@ type Workout = Exercise[];
 
 export default function WorkoutForm() {
   const [workoutType, setWorkoutType] = useState<WorkoutType | null>(null);
+  const [upperWorkout, setUpperWorkout] = useState<Workout>([]);
+  const [lowerWorkout, setLowerWorkout] = useState<Workout>([]);
 
-  const loadWorkout = (type: WorkoutType): Workout => {
-    const storedWorkout = localStorage.getItem(`${type}Workout`);
-    return storedWorkout
-      ? (JSON.parse(storedWorkout) as Workout)
-      : type === "upper"
-      ? upperWorkoutTemplate
-      : lowerWorkoutTemplate;
-  };
+  useEffect(() => {
+    const loadWorkout = (type: WorkoutType): Workout => {
+      const storedWorkout = localStorage.getItem(`${type}Workout`);
+      return storedWorkout
+        ? (JSON.parse(storedWorkout) as Workout)
+        : type === "upper"
+        ? upperWorkoutTemplate
+        : lowerWorkoutTemplate;
+    };
 
-  const [upperWorkout, setUpperWorkout] = useState<Workout>(
-    loadWorkout("upper")
-  );
-  const [lowerWorkout, setLowerWorkout] = useState<Workout>(
-    loadWorkout("lower")
-  );
+    setUpperWorkout(loadWorkout("upper"));
+    setLowerWorkout(loadWorkout("lower"));
+  }, []);
 
   const saveWorkout = (type: WorkoutType, data: Workout) => {
     const savedWorkouts: { date: string; exercises: Workout }[] = JSON.parse(

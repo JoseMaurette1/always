@@ -23,7 +23,6 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
-      { weight: 0, reps: 0 },
     ],
   },
   {
@@ -35,16 +34,23 @@ export const lowerWorkoutTemplate = [
     ],
   },
   {
-    name: "Triceps Kickback (Dumbbell)",
+    name: "Triceps Kickback (Cable)",
     sets: [
-      { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
   },
   {
-    name: "EZ Bar Biceps Curl",
+    name: "Bicep Curl (Dumbbell)",
+    sets: [
+      { weight: 0, reps: 0 },
+      { weight: 0, reps: 0 },
+      { weight: 0, reps: 0 },
+    ],
+  },
+  {
+    name: "Tricep Pushdown (Cable)",
     sets: [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },

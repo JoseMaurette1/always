@@ -9,7 +9,14 @@ export const upperWorkoutTemplate = [
     ],
   },
   {
-    name: "Seated Cable Row - V Grip (Cable)",
+    name: "Pull Up (Bodyweight)",
+    sets: [
+      { weight: 0, reps: 0 },
+      { weight: 0, reps: 0 },
+    ],
+  },
+  {
+    name: "Chest Dip (Bodyweight)",
     sets: [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
@@ -17,16 +24,7 @@ export const upperWorkoutTemplate = [
     ],
   },
   {
-    name: "Seated Chest Flys (Cable)",
-    sets: [
-      { weight: 0, reps: 0 },
-      { weight: 0, reps: 0 },
-      { weight: 0, reps: 0 },
-      { weight: 0, reps: 0 },
-    ],
-  },
-  {
-    name: "Pull Up (Assisted)",
+    name: "D-Grip Lat Pull Down (Cable)",
     sets: [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
@@ -44,7 +42,6 @@ export const upperWorkoutTemplate = [
   {
     name: "Lateral Raise (Machine)",
     sets: [
-      { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],

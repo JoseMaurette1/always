@@ -73,9 +73,9 @@ export default function WorkoutForm() {
 
   useEffect(() => {
     const tick = () => {
-      setUpperWorkout((prevWorkout) => updateTimers(prevWorkout, "upper"));
-      setLowerWorkout((prevWorkout) => updateTimers(prevWorkout, "lower"));
-      setOtherWorkout((prevWorkout) => updateTimers(prevWorkout, "other"));
+      setUpperWorkout((prevWorkout) => updateTimers(prevWorkout));
+      setLowerWorkout((prevWorkout) => updateTimers(prevWorkout));
+      setOtherWorkout((prevWorkout) => updateTimers(prevWorkout));
     };
 
     const intervalId = setInterval(tick, 10); // Update every 10 ms
@@ -83,7 +83,7 @@ export default function WorkoutForm() {
     return () => clearInterval(intervalId);
   }, []);
 
-  const updateTimers = (workout: Workout, type: WorkoutType): Workout => {
+  const updateTimers = (workout: Workout): Workout => {
     return workout.map((exercise) => {
       if (exercise.restTimerRunning && exercise.restTimerStartTime) {
         const elapsedTime = Date.now() - exercise.restTimerStartTime;
@@ -178,7 +178,6 @@ export default function WorkoutForm() {
   const handleRestTimerSelect = (
     workout: Workout,
     setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
-    type: WorkoutType,
     exerciseIndex: number,
     duration: number
   ) => {
@@ -192,7 +191,10 @@ export default function WorkoutForm() {
           : exercise
       );
 
-      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
+      localStorage.setItem(
+        `${workoutType}Workout`,
+        JSON.stringify(updatedWorkout)
+      );
       return updatedWorkout;
     });
   };
@@ -232,7 +234,6 @@ export default function WorkoutForm() {
                       handleRestTimerSelect(
                         workout,
                         setWorkout,
-                        type,
                         exerciseIndex,
                         option
                       )

@@ -6,6 +6,10 @@ export const OtherWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60, // Default rest time in seconds
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Machine Cable Crunch",
@@ -14,6 +18,10 @@ export const OtherWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Reverse Curl (Cable)",
@@ -22,5 +30,9 @@ export const OtherWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
 ];

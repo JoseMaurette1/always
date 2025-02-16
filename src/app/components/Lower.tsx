@@ -7,6 +7,10 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60, // Default rest time in seconds
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Leg Extension (Machine)",
@@ -16,6 +20,10 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Rear Delt Reverse Fly (Cable)",
@@ -24,6 +32,10 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Preacher Curl (Machine)",
@@ -32,6 +44,10 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Triceps Kickback (Cable)",
@@ -40,6 +56,10 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Bicep Curl (Dumbbell)",
@@ -48,6 +68,10 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
   {
     name: "Tricep Pushdown (Cable)",
@@ -56,5 +80,9 @@ export const lowerWorkoutTemplate = [
       { weight: 0, reps: 0 },
       { weight: 0, reps: 0 },
     ],
+    restTimerDuration: 60,
+    restTimerRunning: false,
+    restTimerStartTime: null,
+    restTimerElapsedTime: 0,
   },
 ];

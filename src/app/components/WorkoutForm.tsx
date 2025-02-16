@@ -59,10 +59,10 @@ export default function WorkoutForm() {
       // Initialize rest timer properties for each exercise
       return parsedWorkout.map((exercise) => ({
         ...exercise,
-        restTimerDuration: exercise.restTimerDuration || 60, // Default to 60 seconds
-        restTimerRunning: exercise.restTimerRunning || false,
-        restTimerStartTime: exercise.restTimerStartTime || null,
-        restTimerElapsedTime: exercise.restTimerElapsedTime || 0,
+        restTimerDuration: exercise.restTimerDuration ?? 60, // Default to 60 seconds
+        restTimerRunning: exercise.restTimerRunning ?? false,
+        restTimerStartTime: exercise.restTimerStartTime ?? null,
+        restTimerElapsedTime: exercise.restTimerElapsedTime ?? 0,
       }));
     };
 

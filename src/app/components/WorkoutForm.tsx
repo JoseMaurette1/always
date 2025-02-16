@@ -204,7 +204,7 @@ export default function WorkoutForm() {
                     action: {
                       label: "Undo",
                       onClick: () => {
-                        toast("Workout Has Been Deleted", { duration: 2000 });
+                        toast("Workout Has Been Deleted", { duration: 10 });
                       },
                     },
                   });

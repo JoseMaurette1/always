@@ -10,8 +10,11 @@ const Feb16 = () => {
         <li>Added Framer Motion to Pages</li>
         <li>Added Visual Confirmation to Save Button</li>
         <li>Added Workout History Page to View Previous Workouts</li>
-        <li>Added Dark Mode</li>
+        <li>Added Back Button</li>
         <li>Added Clear History Button</li>
+        <li>Added Abs and Forearm Workouts</li>
+        <li>Added Done Checkmark</li>
+        <li>Added Timer to Sets</li>
       </ul>
       <br />
     </article>

@@ -105,9 +105,9 @@ export default function WorkoutForm() {
     });
   };
 
-  const saveWorkout = (type: WorkoutType, data: Workout) => {
+  const saveWorkout = (data: Workout) => {
     const savedWorkouts: { date: string; exercises: Workout }[] = JSON.parse(
-      localStorage.getItem(`${type}WorkoutHistory`) || "[]"
+      localStorage.getItem(`${workoutType}WorkoutHistory`) || "[]"
     );
 
     const workoutWithDate = {
@@ -117,7 +117,7 @@ export default function WorkoutForm() {
 
     savedWorkouts.push(workoutWithDate);
     localStorage.setItem(
-      `${type}WorkoutHistory`,
+      `${workoutType}WorkoutHistory`,
       JSON.stringify(savedWorkouts)
     );
   };
@@ -129,7 +129,7 @@ export default function WorkoutForm() {
     exerciseIndex: number,
     setIndex: number,
     key: keyof Set,
-    value: any
+    value: number
   ) => {
     setWorkout((prevWorkout) => {
       const updatedWorkout = prevWorkout.map((exercise, i) =>
@@ -143,7 +143,7 @@ export default function WorkoutForm() {
           : exercise
       );
 
-      saveWorkout(type, updatedWorkout);
+      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
       return updatedWorkout;
     });
   };
@@ -152,8 +152,7 @@ export default function WorkoutForm() {
     workout: Workout,
     setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
     type: WorkoutType,
-    exerciseIndex: number,
-    setIndex: number
+    exerciseIndex: number
   ) => {
     setWorkout((prevWorkout) => {
       const updatedWorkout = prevWorkout.map((exercise, i) => {
@@ -171,7 +170,7 @@ export default function WorkoutForm() {
         }
       });
 
-      saveWorkout(type, updatedWorkout);
+      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
       return updatedWorkout;
     });
   };
@@ -193,7 +192,7 @@ export default function WorkoutForm() {
           : exercise
       );
 
-      saveWorkout(type, updatedWorkout);
+      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
       return updatedWorkout;
     });
   };
@@ -322,13 +321,7 @@ export default function WorkoutForm() {
                 variant="ghost"
                 size="icon"
                 onClick={() =>
-                  handleSetCompletion(
-                    workout,
-                    setWorkout,
-                    type,
-                    exerciseIndex,
-                    setIndex
-                  )
+                  handleSetCompletion(workout, setWorkout, type, exerciseIndex)
                 }
               >
                 {set.completed ? (
@@ -388,6 +381,13 @@ export default function WorkoutForm() {
               <Button
                 className="w-24"
                 onClick={() => {
+                  saveWorkout(
+                    workoutType === "upper"
+                      ? upperWorkout
+                      : workoutType === "lower"
+                      ? lowerWorkout
+                      : otherWorkout
+                  );
                   toast.success("Workout Has Been Saved", {
                     action: {
                       label: "Go",

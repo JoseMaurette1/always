@@ -13,7 +13,7 @@ const Navbar = () => {
     >
       <div className="container flex h-16 items-center justify-between">
         <div>{/* Left side content can go here if any */}</div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 md:mr-4">
           <Link href={"/Updates"}>
             <Button>Patch Notes</Button>
           </Link>

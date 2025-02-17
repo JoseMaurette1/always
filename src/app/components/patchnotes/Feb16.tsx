@@ -3,7 +3,6 @@ import React from "react";
 const Feb16 = () => {
   return (
     <article className="prose lg:prose-xl">
-      <h1>Latest Patch Notes</h1>
       <small className="text-gray-500">Published: February 16, 2025</small>
       <h2>New Features:</h2>
       <ul>

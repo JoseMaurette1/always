@@ -152,14 +152,20 @@ export default function WorkoutForm() {
     workout: Workout,
     setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
     type: WorkoutType,
-    exerciseIndex: number
+    exerciseIndex: number,
+    setIndex: number // Add setIndex here
   ) => {
     setWorkout((prevWorkout) => {
       const updatedWorkout = prevWorkout.map((exercise, i) => {
         if (i === exerciseIndex) {
+          const updatedSets = exercise.sets.map((set, j) =>
+            j === setIndex ? { ...set, completed: !set.completed } : set
+          );
+
           // Start timer when set is completed
           const updatedExercise = {
             ...exercise,
+            sets: updatedSets,
             restTimerRunning: true,
             restTimerStartTime: Date.now(),
             restTimerElapsedTime: 0,
@@ -220,37 +226,41 @@ export default function WorkoutForm() {
             <CardTitle className="text-lg font-semibold">
               {exercise.name}
             </CardTitle>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  Rest: {exercise.restTimerDuration}s
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                {restOptions.map((option) => (
-                  <DropdownMenuItem
-                    key={option}
-                    onClick={() =>
-                      handleRestTimerSelect(
-                        workout,
-                        setWorkout,
-                        exerciseIndex,
-                        option
-                      )
-                    }
-                  >
-                    {option} seconds
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <div>
-              <Timer
-                className={
-                  exercise.restTimerRunning ? "text-green-500" : "text-gray-500"
-                }
-              />
-              <span>{formatTime(exercise.restTimerElapsedTime || 0)}</span>
+            <div className="sm:flex sm:flex-col sm:items-end space-y-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    Rest: {exercise.restTimerDuration}s
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  {restOptions.map((option) => (
+                    <DropdownMenuItem
+                      key={option}
+                      onClick={() =>
+                        handleRestTimerSelect(
+                          workout,
+                          setWorkout,
+                          exerciseIndex,
+                          option
+                        )
+                      }
+                    >
+                      {option} seconds
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <div className="flex items-center">
+                <Timer
+                  className={
+                    exercise.restTimerRunning
+                      ? "text-green-500"
+                      : "text-gray-500"
+                  }
+                />
+                <span>{formatTime(exercise.restTimerElapsedTime || 0)}</span>
+              </div>
             </div>
           </div>
         </CardHeader>
@@ -267,7 +277,8 @@ export default function WorkoutForm() {
                 <Input
                   id={`weight-${exerciseIndex}-${setIndex}`}
                   type="number"
-                  value={set.weight ?? ""}
+                  value={set.weight === 0 ? "" : set.weight?.toString()}
+                  placeholder={set.weight === 0 ? "0" : ""}
                   onChange={(e) => {
                     const newValue = e.target.value
                       ? parseFloat(e.target.value)
@@ -283,7 +294,6 @@ export default function WorkoutForm() {
                     );
                   }}
                   className="w-20"
-                  placeholder="Weight"
                 />
               </div>
 
@@ -297,7 +307,8 @@ export default function WorkoutForm() {
                 <Input
                   id={`reps-${exerciseIndex}-${setIndex}`}
                   type="number"
-                  value={set.reps ?? ""}
+                  value={set.reps === 0 ? "" : set.reps?.toString()}
+                  placeholder={set.reps === 0 ? "0" : ""}
                   onChange={(e) => {
                     const newValue = e.target.value
                       ? parseInt(e.target.value, 10)
@@ -313,7 +324,6 @@ export default function WorkoutForm() {
                     );
                   }}
                   className="w-20"
-                  placeholder="Reps"
                 />
               </div>
 
@@ -322,7 +332,13 @@ export default function WorkoutForm() {
                 variant="ghost"
                 size="icon"
                 onClick={() =>
-                  handleSetCompletion(workout, setWorkout, type, exerciseIndex)
+                  handleSetCompletion(
+                    workout,
+                    setWorkout,
+                    type,
+                    exerciseIndex,
+                    setIndex
+                  )
                 }
               >
                 {set.completed ? (

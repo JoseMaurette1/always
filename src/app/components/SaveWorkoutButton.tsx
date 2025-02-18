@@ -10,11 +10,28 @@ import { useRouter } from "next/navigation";
 
 type WorkoutType = "upper" | "lower" | "other";
 
+type Set = {
+  weight: number;
+  reps: number;
+  completed?: boolean;
+};
+
+type Exercise = {
+  name: string;
+  sets: Set[];
+  restTimerDuration?: number; // Duration in seconds
+  restTimerRunning?: boolean;
+  restTimerStartTime?: number | null;
+  restTimerElapsedTime?: number;
+};
+
+type Workout = Exercise[];
+
 interface SaveWorkoutButtonProps {
   workoutType: WorkoutType | null;
-  upperWorkout: any[]; // Replace any with your Workout type
-  lowerWorkout: any[];
-  otherWorkout: any[];
+  upperWorkout: Workout;
+  lowerWorkout: Workout;
+  otherWorkout: Workout;
 }
 
 const SaveWorkoutButton: React.FC<SaveWorkoutButtonProps> = ({
@@ -25,10 +42,8 @@ const SaveWorkoutButton: React.FC<SaveWorkoutButtonProps> = ({
 }) => {
   const router = useRouter();
 
-  const saveWorkout = (data: any[]) => {
-    // Replace any[] with your Workout type
-    const savedWorkouts: { date: string; exercises: any[] }[] = JSON.parse(
-      // Replace any[] with your Workout type
+  const saveWorkout = (data: Workout) => {
+    const savedWorkouts: { date: string; exercises: Workout }[] = JSON.parse(
       localStorage.getItem(`${workoutType}WorkoutHistory`) || "[]"
     );
 

@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import WorkoutTypeButtons from "./WorkoutTypeButtons";
 import WorkoutCard from "./WorkoutCard";
 import SaveWorkoutButton from "./SaveWorkoutButton";
@@ -32,7 +31,6 @@ export default function WorkoutForm() {
   const [upperWorkout, setUpperWorkout] = useState<Workout>([]);
   const [lowerWorkout, setLowerWorkout] = useState<Workout>([]);
   const [otherWorkout, setOtherWorkout] = useState<Workout>([]);
-  const router = useRouter();
 
   useEffect(() => {
     const loadWorkout = (type: WorkoutType): Workout => {

@@ -111,8 +111,9 @@ const WorkoutExercises: React.FC<WorkoutExercisesProps> = ({
     });
   };
 
-  const formatTime = (ms: number) => {
-    const totalSeconds = Math.ceil(ms / 1000);
+  const formatTime = (ms: number, duration: number) => {
+    const remainingTime = Math.max(0, duration * 1000 - ms); // Calculate remaining time
+    const totalSeconds = Math.ceil(remainingTime / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${minutes.toString().padStart(2, "0")}:${seconds
@@ -151,7 +152,12 @@ const WorkoutExercises: React.FC<WorkoutExercisesProps> = ({
                   exercise.restTimerRunning ? "text-green-500" : "text-gray-500"
                 }
               />
-              <span>{formatTime(exercise.restTimerElapsedTime || 0)}</span>
+              <span>
+                {formatTime(
+                  exercise.restTimerElapsedTime || 0,
+                  exercise.restTimerDuration || 60
+                )}
+              </span>
             </div>
           </div>
         </div>

@@ -5,18 +5,35 @@ import React from "react";
 import { House } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import WorkoutExercises from "./WorkoutExercises"; // Create this component
+import WorkoutExercises from "./WorkoutExercises";
 
 type WorkoutType = "upper" | "lower" | "other";
 
+type Set = {
+  weight: number;
+  reps: number;
+  completed?: boolean;
+};
+
+type Exercise = {
+  name: string;
+  sets: Set[];
+  restTimerDuration?: number; // Duration in seconds
+  restTimerRunning?: boolean;
+  restTimerStartTime?: number | null;
+  restTimerElapsedTime?: number;
+};
+
+type Workout = Exercise[];
+
 interface WorkoutCardProps {
   workoutType: WorkoutType;
-  upperWorkout: any[]; // Replace any with your Workout type
-  lowerWorkout: any[];
-  otherWorkout: any[];
-  setUpperWorkout: React.Dispatch<React.SetStateAction<any[]>>; // Replace any with your Workout type
-  setLowerWorkout: React.Dispatch<React.SetStateAction<any[]>>;
-  setOtherWorkout: React.Dispatch<React.SetStateAction<any[]>>;
+  upperWorkout: Workout;
+  lowerWorkout: Workout;
+  otherWorkout: Workout;
+  setUpperWorkout: React.Dispatch<React.SetStateAction<Workout>>;
+  setLowerWorkout: React.Dispatch<React.SetStateAction<Workout>>;
+  setOtherWorkout: React.Dispatch<React.SetStateAction<Workout>>;
 }
 
 const WorkoutCard: React.FC<WorkoutCardProps> = ({

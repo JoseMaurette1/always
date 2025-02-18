@@ -10,6 +10,7 @@ const Feb17 = () => {
         <li>
           Temporaly switched to LocalStorage instead of Prisma, Postgresql
         </li>
+        <li>Added Home Button to Workout Form</li>
         <li>Added Green to Checkmark Icon</li>
         <li>Added Mobile Styling to Fit Screen</li>
       </ul>

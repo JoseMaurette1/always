@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "./components/theme-provider";
+import Navbar from "./components/Navbar";
 import "./globals.css";
 
 const roboto = Roboto_Mono({
@@ -21,7 +23,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.className} `}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          {children}
+        </ThemeProvider>
         <Toaster closeButton expand={false} richColors />
       </body>
     </html>

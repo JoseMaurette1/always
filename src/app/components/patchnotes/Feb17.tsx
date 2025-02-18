@@ -6,7 +6,10 @@ const Feb17 = () => {
       <small className="text-gray-500">Published: February 17, 2025</small>
       <h2>New Features:</h2>
       <ul>
-        <li>Added Placeholders instead of Value = 0</li>
+        <li>Added Dark Mode Toggle</li>
+        <li>Added Github and Portfolio Icons</li>
+        <li>Added Navbar to all pages</li>
+        <li>Added Placeholders for Input Fields</li>
         <li>
           Temporaly switched to LocalStorage instead of Prisma, Postgresql
         </li>

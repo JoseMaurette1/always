@@ -32,7 +32,7 @@ const WorkoutTypeButtons: React.FC<WorkoutTypeButtonsProps> = ({
       <Button
         onClick={() => setWorkoutType("other")}
         variant={workoutType === "other" ? "default" : "outline"}
-        className="mt-2 md:mt-0"
+        className="mt-2 sm:mt-0 md:mt-0"
       >
         Other Workout
       </Button>

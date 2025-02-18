@@ -1,22 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { toast } from "sonner";
-import { House } from "lucide-react";
-import { Download, History, CheckCircle, Timer } from "lucide-react";
+import { useRouter } from "next/navigation";
+import WorkoutTypeButtons from "./WorkoutTypeButtons";
+import WorkoutCard from "./WorkoutCard";
+import SaveWorkoutButton from "./SaveWorkoutButton";
 import { upperWorkoutTemplate } from "./Upper";
 import { lowerWorkoutTemplate } from "./Lower";
 import { OtherWorkoutTemplate } from "./Other";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 type WorkoutType = "upper" | "lower" | "other";
 
@@ -36,8 +26,6 @@ type Exercise = {
 };
 
 type Workout = Exercise[];
-
-const restOptions = [30, 60, 90, 120, 150, 180];
 
 export default function WorkoutForm() {
   const [workoutType, setWorkoutType] = useState<WorkoutType | null>(null);
@@ -106,331 +94,31 @@ export default function WorkoutForm() {
     });
   };
 
-  const saveWorkout = (data: Workout) => {
-    const savedWorkouts: { date: string; exercises: Workout }[] = JSON.parse(
-      localStorage.getItem(`${workoutType}WorkoutHistory`) || "[]"
-    );
-
-    const workoutWithDate = {
-      date: new Date().toISOString(),
-      exercises: data,
-    };
-
-    savedWorkouts.push(workoutWithDate);
-    localStorage.setItem(
-      `${workoutType}WorkoutHistory`,
-      JSON.stringify(savedWorkouts)
-    );
-  };
-
-  const handleUpdateSet = (
-    workout: Workout,
-    setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
-    type: WorkoutType,
-    exerciseIndex: number,
-    setIndex: number,
-    key: keyof Set,
-    value: number
-  ) => {
-    setWorkout((prevWorkout) => {
-      const updatedWorkout = prevWorkout.map((exercise, i) =>
-        i === exerciseIndex
-          ? {
-              ...exercise,
-              sets: exercise.sets.map((set, j) =>
-                j === setIndex ? { ...set, [key]: value } : set
-              ),
-            }
-          : exercise
-      );
-
-      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
-      return updatedWorkout;
-    });
-  };
-
-  const handleSetCompletion = (
-    workout: Workout,
-    setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
-    type: WorkoutType,
-    exerciseIndex: number,
-    setIndex: number // Add setIndex here
-  ) => {
-    setWorkout((prevWorkout) => {
-      const updatedWorkout = prevWorkout.map((exercise, i) => {
-        if (i === exerciseIndex) {
-          const updatedSets = exercise.sets.map((set, j) =>
-            j === setIndex ? { ...set, completed: !set.completed } : set
-          );
-
-          // Start timer when set is completed
-          const updatedExercise = {
-            ...exercise,
-            sets: updatedSets,
-            restTimerRunning: true,
-            restTimerStartTime: Date.now(),
-            restTimerElapsedTime: 0,
-          };
-          return updatedExercise;
-        } else {
-          return exercise;
-        }
-      });
-
-      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
-      return updatedWorkout;
-    });
-  };
-
-  const handleRestTimerSelect = (
-    workout: Workout,
-    setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
-    exerciseIndex: number,
-    duration: number
-  ) => {
-    setWorkout((prevWorkout) => {
-      const updatedWorkout = prevWorkout.map((exercise, i) =>
-        i === exerciseIndex
-          ? {
-              ...exercise,
-              restTimerDuration: duration,
-            }
-          : exercise
-      );
-
-      localStorage.setItem(
-        `${workoutType}Workout`,
-        JSON.stringify(updatedWorkout)
-      );
-      return updatedWorkout;
-    });
-  };
-
-  const formatTime = (ms: number) => {
-    const totalSeconds = Math.ceil(ms / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  const renderWorkout = (
-    workout: Workout,
-    setWorkout: React.Dispatch<React.SetStateAction<Workout>>,
-    type: WorkoutType
-  ) =>
-    workout.map((exercise, exerciseIndex) => (
-      <Card key={exercise.name} className="mb-4">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold">
-              {exercise.name}
-            </CardTitle>
-            <div className="sm:flex sm:flex-col sm:items-end space-y-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    Rest: {exercise.restTimerDuration}s
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  {restOptions.map((option) => (
-                    <DropdownMenuItem
-                      key={option}
-                      onClick={() =>
-                        handleRestTimerSelect(
-                          workout,
-                          setWorkout,
-                          exerciseIndex,
-                          option
-                        )
-                      }
-                    >
-                      {option} seconds
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <div className="flex items-center">
-                <Timer
-                  className={
-                    exercise.restTimerRunning
-                      ? "text-green-500"
-                      : "text-gray-500"
-                  }
-                />
-                <span>{formatTime(exercise.restTimerElapsedTime || 0)}</span>
-              </div>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {exercise.sets.map((set, setIndex) => (
-            <div key={setIndex} className="flex items-center space-x-2 mb-2">
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`weight-${exerciseIndex}-${setIndex}`}
-                  className="text-sm text-gray-600"
-                >
-                  Lbs
-                </label>
-                <Input
-                  id={`weight-${exerciseIndex}-${setIndex}`}
-                  type="number"
-                  value={set.weight === 0 ? "" : set.weight?.toString()}
-                  placeholder={set.weight === 0 ? "0" : ""}
-                  onChange={(e) => {
-                    const newValue = e.target.value
-                      ? parseFloat(e.target.value)
-                      : 0;
-                    handleUpdateSet(
-                      workout,
-                      setWorkout,
-                      type,
-                      exerciseIndex,
-                      setIndex,
-                      "weight",
-                      newValue
-                    );
-                  }}
-                  className="w-20"
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`reps-${exerciseIndex}-${setIndex}`}
-                  className="text-sm text-gray-600"
-                >
-                  Reps
-                </label>
-                <Input
-                  id={`reps-${exerciseIndex}-${setIndex}`}
-                  type="number"
-                  value={set.reps === 0 ? "" : set.reps?.toString()}
-                  placeholder={set.reps === 0 ? "0" : ""}
-                  onChange={(e) => {
-                    const newValue = e.target.value
-                      ? parseInt(e.target.value, 10)
-                      : 0;
-                    handleUpdateSet(
-                      workout,
-                      setWorkout,
-                      type,
-                      exerciseIndex,
-                      setIndex,
-                      "reps",
-                      newValue
-                    );
-                  }}
-                  className="w-20"
-                />
-              </div>
-
-              <span className="text-sm text-gray-500">Set {setIndex + 1}</span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() =>
-                  handleSetCompletion(
-                    workout,
-                    setWorkout,
-                    type,
-                    exerciseIndex,
-                    setIndex
-                  )
-                }
-              >
-                {set.completed ? (
-                  <CheckCircle className="text-green-500" />
-                ) : (
-                  <CheckCircle className="text-gray-300" />
-                )}
-              </Button>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-    ));
-
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-center space-x-4 mb-8 flex-wrap">
-        <Button
-          onClick={() => setWorkoutType("upper")}
-          variant={workoutType === "upper" ? "default" : "outline"}
-        >
-          Upper Workout
-        </Button>
-        <Button
-          onClick={() => setWorkoutType("lower")}
-          variant={workoutType === "lower" ? "default" : "outline"}
-        >
-          Lower Workout
-        </Button>
-        <Button
-          onClick={() => setWorkoutType("other")}
-          variant={workoutType === "other" ? "default" : "outline"}
-          className="mt-2 md:mt-0"
-        >
-          Other Workout
-        </Button>
-      </div>
+      <WorkoutTypeButtons
+        workoutType={workoutType}
+        setWorkoutType={setWorkoutType}
+      />
 
       {workoutType && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold flex items-center justify-between">
-              {workoutType === "upper"
-                ? "Upper Workout"
-                : workoutType === "lower"
-                ? "Lower Workout"
-                : "Other Workout"}
-              <Link href={"/"} className="flex items-center pr-2">
-                <House />
-              </Link>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {workoutType === "upper" &&
-              renderWorkout(upperWorkout, setUpperWorkout, "upper")}
-            {workoutType === "lower" &&
-              renderWorkout(lowerWorkout, setLowerWorkout, "lower")}
-            {workoutType === "other" &&
-              renderWorkout(otherWorkout, setOtherWorkout, "other")}
-            <div className="flex space-x-4 justify-center mt-6">
-              <Button
-                className="w-24"
-                onClick={() => {
-                  saveWorkout(
-                    workoutType === "upper"
-                      ? upperWorkout
-                      : workoutType === "lower"
-                      ? lowerWorkout
-                      : otherWorkout
-                  );
-                  toast.success("Workout Has Been Saved", {
-                    action: {
-                      label: "Go",
-                      onClick: () => {
-                        toast("Routing to History...", { duration: 10 });
-                        router.push("/History");
-                      },
-                    },
-                  });
-                }}
-              >
-                Save <Download />
-              </Button>
-              <Link href={"/History"}>
-                <Button>
-                  Workout History <History />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        <WorkoutCard
+          workoutType={workoutType}
+          upperWorkout={upperWorkout}
+          lowerWorkout={lowerWorkout}
+          otherWorkout={otherWorkout}
+          setUpperWorkout={setUpperWorkout}
+          setLowerWorkout={setLowerWorkout}
+          setOtherWorkout={setOtherWorkout}
+        />
+      )}
+      {workoutType && (
+        <SaveWorkoutButton
+          workoutType={workoutType}
+          upperWorkout={upperWorkout}
+          lowerWorkout={lowerWorkout}
+          otherWorkout={otherWorkout}
+        />
       )}
     </div>
   );

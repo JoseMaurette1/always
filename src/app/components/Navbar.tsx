@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./theme-toggle";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
@@ -12,11 +14,12 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <div className="container flex h-16 items-center justify-between">
-        <div>{/* Left side content can go here if any */}</div>
-        <div className="flex items-center space-x-4 md:mr-4">
+        <div>{/* Left Content */}</div>
+        <div className="flex items-center space-x-4 mr-12 md:mr-12">
           <Link href={"/Updates"}>
             <Button>Patch Notes</Button>
           </Link>
+          <ThemeToggle />
         </div>
       </div>
     </motion.div>

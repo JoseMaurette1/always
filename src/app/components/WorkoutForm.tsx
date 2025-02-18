@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { House } from "lucide-react";
 import { Download, History, CheckCircle, Timer } from "lucide-react";
 import { upperWorkoutTemplate } from "./Upper";
 import { lowerWorkoutTemplate } from "./Lower";
@@ -355,7 +356,7 @@ export default function WorkoutForm() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-center space-x-4 mb-8">
+      <div className="flex justify-center space-x-4 mb-8 flex-wrap">
         <Button
           onClick={() => setWorkoutType("upper")}
           variant={workoutType === "upper" ? "default" : "outline"}
@@ -379,12 +380,15 @@ export default function WorkoutForm() {
       {workoutType && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">
+            <CardTitle className="text-2xl font-bold flex items-center justify-between">
               {workoutType === "upper"
                 ? "Upper Workout"
                 : workoutType === "lower"
                 ? "Lower Workout"
                 : "Other Workout"}
+              <Link href={"/"} className="flex items-center pr-2">
+                <House />
+              </Link>
             </CardTitle>
           </CardHeader>
           <CardContent>

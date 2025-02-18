@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CircleArrowRight } from "lucide-react";
+import { CircleArrowRight, BriefcaseBusiness, Github } from "lucide-react";
 import { motion } from "framer-motion";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen  text-gray-800">
+    <div className="flex flex-col items-center justify-center h-screen  ">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -19,6 +19,34 @@ const LoginPage = () => {
         <p className="text-lg text-gray-600 pb-8">
           Showcase version, full version is private
         </p>
+        <div className="flex items-center space-x-4">
+          <Link
+            href="https://github.com/JoseMaurette1"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              className="hidden sm:flex border-border/50 hover:border-foreground/20"
+            >
+              <Github className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link
+            href={"https://hosedev.vercel.app"}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              className="hidden sm:flex border-border/50 hover:border-foreground/20"
+            >
+              <BriefcaseBusiness />
+            </Button>
+          </Link>
+        </div>
       </motion.div>
 
       <motion.div

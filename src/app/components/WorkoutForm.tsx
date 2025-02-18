@@ -372,6 +372,7 @@ export default function WorkoutForm() {
         <Button
           onClick={() => setWorkoutType("other")}
           variant={workoutType === "other" ? "default" : "outline"}
+          className="mt-2 md:mt-0"
         >
           Other Workout
         </Button>

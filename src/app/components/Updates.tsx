@@ -3,6 +3,7 @@
 import React from "react";
 import Feb16 from "./patchnotes/Feb16";
 import Feb17 from "./patchnotes/Feb17";
+import Feb20 from "./patchnotes/Feb20";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft } from "lucide-react";
@@ -35,6 +36,7 @@ const Updates = () => {
           >
             <ScrollArea className="h-[70vh] md:h-[500px] w-full rounded-md border">
               <div className="p-4">
+                <Feb20 />
                 <Feb17 />
                 <Feb16 />
                 {/* Add more patch note components here */}

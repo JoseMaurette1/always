@@ -37,13 +37,25 @@ export default function WorkoutHistory() {
     const storedLower = localStorage.getItem("lowerWorkoutHistory");
     const storedOther = localStorage.getItem("otherWorkoutHistory");
 
-    if (storedUpper)
-      setUpperWorkoutHistory(JSON.parse(storedUpper) as WorkoutEntry[]);
-    if (storedLower)
-      setLowerWorkoutHistory(JSON.parse(storedLower) as WorkoutEntry[]);
-    if (storedOther)
-      setOtherWorkoutHistory(JSON.parse(storedOther) as WorkoutEntry[]);
+    if (storedUpper) {
+      const parsedUpper = JSON.parse(storedUpper) as WorkoutEntry[];
+      setUpperWorkoutHistory(sortWorkouts(parsedUpper));
+    }
+    if (storedLower) {
+      const parsedLower = JSON.parse(storedLower) as WorkoutEntry[];
+      setLowerWorkoutHistory(sortWorkouts(parsedLower));
+    }
+    if (storedOther) {
+      const parsedOther = JSON.parse(storedOther) as WorkoutEntry[];
+      setOtherWorkoutHistory(sortWorkouts(parsedOther));
+    }
   }, []);
+
+  const sortWorkouts = (workoutHistory: WorkoutEntry[]): WorkoutEntry[] => {
+    return [...workoutHistory].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  };
 
   const clearHistory = (type: "upper" | "lower" | "other") => {
     if (type === "upper") {

@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { CheckCircle, Timer } from "lucide-react";
+import { CheckCircle, Timer, Plus, Minus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,6 +102,38 @@ const WorkoutExercises: React.FC<WorkoutExercisesProps> = ({
           ? {
               ...exercise,
               restTimerDuration: duration,
+            }
+          : exercise
+      );
+
+      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
+      return updatedWorkout;
+    });
+  };
+
+  const handleAddSet = (exerciseIndex: number) => {
+    setWorkout((prevWorkout) => {
+      const updatedWorkout = prevWorkout.map((exercise, i) =>
+        i === exerciseIndex
+          ? {
+              ...exercise,
+              sets: [...exercise.sets, { weight: 0, reps: 0 }], // Add a new set with default values
+            }
+          : exercise
+      );
+
+      localStorage.setItem(`${type}Workout`, JSON.stringify(updatedWorkout));
+      return updatedWorkout;
+    });
+  };
+
+  const handleRemoveSet = (exerciseIndex: number, setIndex: number) => {
+    setWorkout((prevWorkout) => {
+      const updatedWorkout = prevWorkout.map((exercise, i) =>
+        i === exerciseIndex
+          ? {
+              ...exercise,
+              sets: exercise.sets.filter((_, j) => j !== setIndex), // Remove the set at setIndex
             }
           : exercise
       );
@@ -223,6 +255,28 @@ const WorkoutExercises: React.FC<WorkoutExercisesProps> = ({
             </Button>
           </div>
         ))}
+        <div className="flex flex-col w-full">
+          <Button
+            variant="outline"
+            className="w-full mb-2"
+            onClick={() => handleAddSet(exerciseIndex)}
+          >
+            Add
+            <Plus className="" />
+          </Button>
+          {exercise.sets.length > 1 && (
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() =>
+                handleRemoveSet(exerciseIndex, exercise.sets.length - 1)
+              }
+            >
+              Remove
+              <Minus className="" />
+            </Button>
+          )}
+        </div>{" "}
       </CardContent>
     </Card>
   ));

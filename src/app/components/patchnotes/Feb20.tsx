@@ -8,7 +8,7 @@ const Feb20 = () => {
       <ul>
         <li>Fixed Workout History to render most recent workouts</li>
         <h1>Upcoming Changes:</h1>
-        <li>Clerk.js Authentication for Account Creation</li>
+        <li>BetterAuth Authentication for Account Creation</li>
         <li>Sign-in and Sign-up</li>
       </ul>
       <br />

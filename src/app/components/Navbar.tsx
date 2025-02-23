@@ -14,12 +14,12 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center ml-[15rem] md:ml-[15rem]">
+        <div className="flex items-center ml-8 md:ml-[15rem]">
           <Link href={"/"}>
             <h1 className="text-2xl font-bold tracking-tighter">Always</h1>
           </Link>
         </div>
-        <div className="flex items-center space-x-4 mr-8 md:mr-0">
+        <div className="flex items-center space-x-4 mr-10 md:mr-0">
           <Link href={"/Updates"}>
             <Button>Patch Notes</Button>
           </Link>

@@ -1,4 +1,7 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Download } from "lucide-react";
 
 import React from "react";
 import WorkoutHistory from "../components/WorkoutHistory";
@@ -13,6 +16,14 @@ const Page = () => {
       transition={{ duration: 0.5, ease: "easeInOut" }}
     >
       <WorkoutHistory />
+      <div className="flex items-center justify-center mt-4">
+        <Link href={"/install"}>
+          <Button variant="outline" className="">
+            Always
+            <Download className="mr-2" />
+          </Button>
+        </Link>
+      </div>
     </motion.div>
   );
 };

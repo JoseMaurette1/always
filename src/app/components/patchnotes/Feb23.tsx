@@ -7,6 +7,8 @@ const Feb23 = () => {
       <h2>New Features:</h2>
       <ul>
         <li>Added Removing and Adding Sets</li>
+        <li>Added Install Page</li>
+        <li>Added Logo to Navbar</li>
       </ul>
       <br />
     </article>

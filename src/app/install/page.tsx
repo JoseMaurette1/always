@@ -1,6 +1,5 @@
 import React from "react";
 import { Share } from "lucide-react";
-import { Download } from "lucide-react";
 
 const page = () => {
   return (

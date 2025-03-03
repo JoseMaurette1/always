@@ -17,7 +17,13 @@ const LoginPage = () => {
           Welcome to Always v.1
         </h1>
         <p className="text-lg text-gray-600 pb-8">
-          Showcase version, full version is private
+          Showcase Version, Merged with{" "}
+          <Link
+            className="underline text-blue-500 text-xl"
+            href={"https://Macrotrue.vercel.app/"}
+          >
+            Macrotrue
+          </Link>
         </p>
         <div className="flex items-center space-x-4">
           <Link

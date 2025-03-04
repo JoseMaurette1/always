@@ -4,8 +4,8 @@ import Link from "next/link";
 const Mar3 = () => {
   return (
     <>
-      <article className="prose lg:prose-xl">
-        <small className="text-gray-500">Published: February 16, 2025</small>
+      <article className="">
+        <small className="text-gray-500">Published: March 3, 2025</small>
         <h2>New Features:</h2>
         <ul>
           <li>

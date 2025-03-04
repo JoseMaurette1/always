@@ -1,7 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CircleArrowRight, BriefcaseBusiness, Github } from "lucide-react";
+import {
+  CircleArrowRight,
+  BriefcaseBusiness,
+  Github,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 const LoginPage = () => {
@@ -52,6 +58,32 @@ const LoginPage = () => {
               <BriefcaseBusiness />
             </Button>
           </Link>
+          <Link
+            href="https://linkedin.com/in/josemaurette"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              className="hidden sm:flex border-border/50 hover:border-foreground/20"
+            >
+              <Linkedin className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link
+            href="https://www.instagram.com/hose_04/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button
+              variant="outline"
+              size="icon"
+              className="hidden sm:flex border-border/50 hover:border-foreground/20"
+            >
+              <Instagram className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </motion.div>
 
@@ -59,6 +91,7 @@ const LoginPage = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }}
+        className="md:mt-8 sm:mt-8 mt-0"
       >
         <Link href={"/workouts"}>
           <Button>

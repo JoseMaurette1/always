@@ -34,7 +34,7 @@ const LoginPage = () => {
             </Button>
           </Link>
           <Link
-            href={"https://hosedev.vercel.app"}
+            href={"https://hosem.vercel.app"}
             target="_blank"
             rel="noreferrer"
           >

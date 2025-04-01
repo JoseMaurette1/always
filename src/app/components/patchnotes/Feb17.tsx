@@ -2,7 +2,7 @@ import React from "react";
 
 const Feb17 = () => {
   return (
-    <article className="prose lg:prose-xl">
+    <article className="">
       <small className="text-gray-500">Published: February 17, 2025</small>
       <h2>New Features:</h2>
       <ul>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Feb16 from "./patchnotes/Feb16";
+import Mar3 from "./patchnotes/Mar3";
 import Feb17 from "./patchnotes/Feb17";
 import Feb20 from "./patchnotes/Feb20";
 import Feb23 from "./patchnotes/Feb23";
@@ -37,6 +38,7 @@ const Updates = () => {
           >
             <ScrollArea className="h-[70vh] md:h-[500px] w-full rounded-md border">
               <div className="p-4">
+                <Mar3 />
                 <Feb23 />
                 <Feb20 />
                 <Feb17 />

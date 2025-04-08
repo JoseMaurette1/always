@@ -16,5 +16,5 @@
     "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key"
   },
-  "buildCommand": "next build --no-lint"
+  "buildCommand": "NEXT_DISABLE_SOURCEMAPS=1 NEXT_DISABLE_FETCH_CACHE=1 NEXT_DISABLE_PAGE_DATA_COLLECTION=1 next build --no-lint"
 }

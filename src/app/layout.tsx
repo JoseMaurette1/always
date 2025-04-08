@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Inter as InterFont, Roboto_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "./components/theme-provider";
 import Navbar from "./components/Navbar";
 import "./globals.css";
 
-const roboto = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
-});
-
-const inter = InterFont({
+const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });

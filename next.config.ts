@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     // Disable static generation for pages that use Supabase client
   },
   serverExternalPackages: ["@supabase/supabase-js"],
+  // Force all routes to be dynamically rendered
+  staticPageGenerationTimeout: 120,
 };
 
 export default nextConfig;

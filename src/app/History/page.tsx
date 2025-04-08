@@ -7,6 +7,9 @@ import React from "react";
 import WorkoutHistory from "../components/WorkoutHistory";
 import { motion } from "framer-motion";
 
+// Force dynamic rendering to prevent prerendering errors with Supabase
+export const dynamic = "force-dynamic";
+
 const Page = () => {
   return (
     <motion.div

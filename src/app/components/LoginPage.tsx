@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen  ">
+    <div className="flex flex-col items-center justify-center h-screen">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -23,7 +23,7 @@ const LoginPage = () => {
           Welcome to Always v.1
         </h1>
         <p className="text-lg text-gray-600 pb-8">
-          Showcase Version, Merged with{" "}
+          Demo Version, visit{" "}
           <Link
             className="underline text-blue-500 text-xl"
             href={"https://Macrotrue.vercel.app/"}
@@ -31,7 +31,7 @@ const LoginPage = () => {
             Macrotrue
           </Link>
         </p>
-        <div className="flex items-center space-x-4">
+        <div className="flex justify-center items-center space-x-4">
           <Link
             href="https://github.com/JoseMaurette1"
             target="_blank"
@@ -42,11 +42,11 @@ const LoginPage = () => {
               size="icon"
               className="hidden sm:flex border-border/50 hover:border-foreground/20"
             >
-              <Github className="h-4 w-4" />
+              <Github className="h-5 w-5" />
             </Button>
           </Link>
           <Link
-            href={"https://hosedev.vercel.app"}
+            href={"https://hosem.vercel.app"}
             target="_blank"
             rel="noreferrer"
           >
@@ -55,7 +55,7 @@ const LoginPage = () => {
               size="icon"
               className="hidden sm:flex border-border/50 hover:border-foreground/20"
             >
-              <BriefcaseBusiness />
+              <BriefcaseBusiness className="h-5 w-5" />
             </Button>
           </Link>
           <Link
@@ -68,7 +68,7 @@ const LoginPage = () => {
               size="icon"
               className="hidden sm:flex border-border/50 hover:border-foreground/20"
             >
-              <Linkedin className="h-4 w-4" />
+              <Linkedin className="h-5 w-5" />
             </Button>
           </Link>
           <Link
@@ -81,7 +81,7 @@ const LoginPage = () => {
               size="icon"
               className="hidden sm:flex border-border/50 hover:border-foreground/20"
             >
-              <Instagram className="h-4 w-4" />
+              <Instagram className="h-5 w-5" />
             </Button>
           </Link>
         </div>

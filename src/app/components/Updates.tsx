@@ -1,17 +1,18 @@
 "use client";
 
 import React from "react";
-import Feb16 from "./patchnotes/Feb16";
-import Mar3 from "./patchnotes/Mar3";
-import Feb17 from "./patchnotes/Feb17";
-import Feb20 from "./patchnotes/Feb20";
-import Feb23 from "./patchnotes/Feb23";
-import Link from "next/link";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft } from "lucide-react";
+import Markdown from "markdown-to-jsx";
+import { type Update } from "../lib/updates";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-const Updates = () => {
+interface UpdatesProps {
+  updates: Update[];
+}
+
+const Updates = ({ updates }: UpdatesProps) => {
   return (
     <>
       <motion.div
@@ -38,12 +39,28 @@ const Updates = () => {
           >
             <ScrollArea className="h-[70vh] md:h-[500px] w-full rounded-md border">
               <div className="p-4">
-                <Mar3 />
-                <Feb23 />
-                <Feb20 />
-                <Feb17 />
-                <Feb16 />
-                {/* Add more patch note components here */}
+                <div className="space-y-12">
+                  {updates.map((update: Update) => (
+                    <article
+                      key={update.id}
+                      className="prose dark:prose-invert max-w-none"
+                    >
+                      <div className="mb-4">
+                        <h2 className="text-2xl font-semibold">
+                          {update.title}
+                        </h2>
+                        <time className="text-gray-500 text-sm">
+                          {new Date(update.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </time>
+                      </div>
+                      <Markdown>{update.content}</Markdown>
+                    </article>
+                  ))}
+                </div>
               </div>
             </ScrollArea>
           </motion.div>

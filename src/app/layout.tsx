@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto_Mono } from "next/font/google";
+import { Inter as InterFont, Roboto_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "./components/theme-provider";
 import Navbar from "./components/Navbar";
@@ -7,6 +7,11 @@ import "./globals.css";
 
 const roboto = Roboto_Mono({
   variable: "--font-roboto-mono",
+  subsets: ["latin"],
+});
+
+const inter = InterFont({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -22,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${roboto.className} `}>
+      <body className={`${inter.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

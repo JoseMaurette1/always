@@ -4,10 +4,21 @@ import { supabase } from "./supabase";
  * Gets the current user session if it exists
  */
 export const getSession = async () => {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  return session;
+  // Check if supabase client is initialized
+  if (!supabase) {
+    console.warn("Supabase client not initialized, cannot get session");
+    return null;
+  }
+
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session;
+  } catch (error) {
+    console.error("Error getting session:", error);
+    return null;
+  }
 };
 
 /**
@@ -47,6 +58,12 @@ export const createTemporaryUserId = (): string => {
  */
 export const ensureAuthSession = async (): Promise<string> => {
   try {
+    // First check if the Supabase client is initialized
+    if (!supabase) {
+      console.warn("Supabase client not initialized, using temporary ID");
+      return createTemporaryUserId();
+    }
+
     // Check if we already have a session
     const session = await getSession();
 
@@ -68,6 +85,12 @@ export const ensureAuthSession = async (): Promise<string> => {
  */
 export const getCurrentUserId = async (): Promise<string> => {
   try {
+    // First check if the Supabase client is initialized
+    if (!supabase) {
+      console.warn("Supabase client not initialized, using temporary ID");
+      return createTemporaryUserId();
+    }
+
     const session = await getSession();
     return session?.user.id || createTemporaryUserId();
   } catch (error) {

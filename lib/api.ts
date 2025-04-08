@@ -1,6 +1,8 @@
 import { supabase } from "./supabase";
 import { ensureAuthSession, getCurrentUserId } from "./auth";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type WorkoutType = "upper" | "lower" | "other";
 
 export type Set = {
@@ -27,6 +29,25 @@ export interface WorkoutEntry {
   workoutType: WorkoutType;
 }
 
+// Database interfaces
+interface WorkoutRecord {
+  id: string;
+  created_at: string;
+  name: string;
+  user_id: string;
+  workout_type: WorkoutType;
+  metadata?: any;
+}
+
+interface ExerciseRecord {
+  id: string;
+  created_at: string;
+  name: string;
+  sets: any;
+  rest_timer_duration?: number;
+  workout_id: string;
+}
+
 /**
  * Save a workout to Supabase
  */
@@ -35,6 +56,12 @@ export const saveWorkoutToSupabase = async (
   exercises: Workout
 ): Promise<boolean> => {
   try {
+    // Check if Supabase client is initialized
+    if (!supabase) {
+      console.warn("Supabase client not initialized, cannot save workout");
+      return false;
+    }
+
     // Ensure we have a user session
     const userId = await ensureAuthSession();
 
@@ -90,6 +117,14 @@ export const getWorkoutHistory = async (
   workoutType: WorkoutType
 ): Promise<WorkoutEntry[]> => {
   try {
+    // Check if Supabase client is initialized
+    if (!supabase) {
+      console.warn(
+        "Supabase client not initialized, cannot get workout history"
+      );
+      return [];
+    }
+
     const userId = await getCurrentUserId();
 
     if (!userId) {
@@ -112,7 +147,7 @@ export const getWorkoutHistory = async (
     // Now get all exercises for these workouts
     const workoutHistory: WorkoutEntry[] = [];
 
-    for (const workout of workouts) {
+    for (const workout of workouts as WorkoutRecord[]) {
       const { data: exercises, error: exercisesError } = await supabase
         .from("exercises")
         .select("name, sets, rest_timer_duration")
@@ -128,12 +163,13 @@ export const getWorkoutHistory = async (
         id: workout.id,
         date: workout.created_at,
         workoutType,
-        exercises:
-          exercises?.map((ex) => ({
-            name: ex.name,
-            sets: Array.isArray(ex.sets) ? ex.sets : [],
-            restTimerDuration: ex.rest_timer_duration,
-          })) || [],
+        exercises: exercises
+          ? (exercises as ExerciseRecord[]).map((ex) => ({
+              name: ex.name,
+              sets: Array.isArray(ex.sets) ? ex.sets : [],
+              restTimerDuration: ex.rest_timer_duration,
+            }))
+          : [],
       });
     }
 
@@ -151,6 +187,14 @@ export const clearWorkoutHistory = async (
   workoutType: WorkoutType
 ): Promise<boolean> => {
   try {
+    // Check if Supabase client is initialized
+    if (!supabase) {
+      console.warn(
+        "Supabase client not initialized, cannot clear workout history"
+      );
+      return false;
+    }
+
     const userId = await getCurrentUserId();
 
     if (!userId) {

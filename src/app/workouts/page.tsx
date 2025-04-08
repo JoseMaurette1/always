@@ -3,6 +3,9 @@ import React from "react";
 import WorkoutForm from "../components/WorkoutForm";
 import { motion } from "framer-motion";
 
+// Force dynamic rendering to prevent prerendering errors with Supabase
+export const dynamic = "force-dynamic";
+
 const page = () => {
   return (
     <>

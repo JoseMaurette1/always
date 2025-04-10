@@ -1,10 +1,6 @@
-# Start of Selection
-
 ---
-
 title: "April 8 Update"
 date: "2025-04-08"
-
 ---
 
 # Upcoming Features:
@@ -16,5 +12,3 @@ date: "2025-04-08"
 
 - Enhanced User Authentication
 - Improved UI for Workout Tracking
-
-# End of Selection

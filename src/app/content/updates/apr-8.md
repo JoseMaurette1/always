@@ -7,6 +7,7 @@ date: "2025-04-08"
 
 - Migrating from LocalStorage to Supabase Database
 - Embedding into Macrotrue
+- Adding Custom Exercises
 
 # New Features:
 

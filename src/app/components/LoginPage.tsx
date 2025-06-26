@@ -59,7 +59,7 @@ const LoginPage = () => {
             </Button>
           </Link>
           <Link
-            href="https://linkedin.com/in/josemaurette"
+            href="https://linkedin.com/in/maurette"
             target="_blank"
             rel="noreferrer"
           >
